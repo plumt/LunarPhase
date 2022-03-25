@@ -33,30 +33,21 @@ val networkModule = module {
         return okHttpClientBuilder.build()
     }
 
-    fun provideRetrofit(client: OkHttpClient, baseUrl: String, type: Int): Retrofit {
-        return if (type == 1) {
-            Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
-                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-                .client(client)
-                .build()
-        } else {
-            Retrofit.Builder()
-                .baseUrl(baseUrl)
-//                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(TikXmlConverterFactory.create(TikXml.Builder().exceptionOnUnreadXml(false).build()))
-                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-                .client(client)
-                .build()
+    fun provideRetrofit(client: OkHttpClient, baseUrl: String): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+//                .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
+            .addConverterFactory(TikXmlConverterFactory.create(TikXml.Builder().exceptionOnUnreadXml(false).build()))
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .client(client)
+            .build()
 
-        }
     }
     single { provideHttpClient() }
 
-    single(named("open")) {
+    single {
         val baseUrl = androidContext().getString(R.string.OPEN_URL)
-        provideRetrofit(get(), baseUrl, 2)
+        provideRetrofit(get(), baseUrl)
     }
 
 //    single {

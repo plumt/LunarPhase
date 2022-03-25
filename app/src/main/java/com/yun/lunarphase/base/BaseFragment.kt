@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.navigation.findNavController
 import com.trello.rxlifecycle4.components.support.RxFragment
-import com.yun.lunarphase.MainViewModel
+import com.yun.lunarphase.ui.main.MainViewModel
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 

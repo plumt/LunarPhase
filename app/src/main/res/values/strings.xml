@@ -2,6 +2,16 @@
     <string name="app_name">LunarPhase</string>
     <string name="OPEN_URL">http://apis.data.go.kr</string>
 
-    <string name="ADDRESS_KEY">nHxMfmtyTjtuCvjAcPez7bDwl%2BPwLECo%2FF2%2FLp92vVDqrtlW4KTvdmMMqZiXWu5zyrP6ehOEnYoeG6hpdbSA8w%3D%3D</string>
+    <string name="ServiceKey">nHxMfmtyTjtuCvjAcPez7bDwl%2BPwLECo%2FF2%2FLp92vVDqrtlW4KTvdmMMqZiXWu5zyrP6ehOEnYoeG6hpdbSA8w%3D%3D</string>
+    <string name="result">확인</string>
+    <string name="btnCalendar">캘린더로 보기</string>
+    <string name="btnList">리스트로 보기</string>
+    <string name="admob_app_id">ca-app-pub-7669498576619816~6844934749</string>
+    <string name="admob_banner_id">ca-app-pub-7669498576619816/3644056335</string>
+    <string name="admob_front_id">ca-app-pub-7669498576619816/6439231325</string>
+
+    <string name="admob_app_test_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="admob_banner_test_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="admob_front_test_id">ca-app-pub-3940256099942544/1033173712</string>
 
 </resources>

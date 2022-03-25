@@ -11,6 +11,6 @@ interface OpenApi {
         @Query("ServiceKey") ServiceKey: String,
         @Query("solYear") solYear: String,
         @Query("solMonth") solMonth: String,
-        @Query("solDay") solDay: String
+        @Query("numOfRows") numOfRows: String
     ): Observable<MoonModel.RS>
 }

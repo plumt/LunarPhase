@@ -9,6 +9,18 @@
     <fragment
         tools:layout="@layout/fragment_home"
         android:id="@+id/homeFragment"
-        android:name="com.yun.lunarphase.ui.HomeFragment"
+        android:name="com.yun.lunarphase.ui.home.HomeFragment"
         android:label="HomeFragment" />
+    <fragment
+        tools:layout="@layout/fragment_list_moon"
+        android:id="@+id/listMoonFragment"
+        android:name="com.yun.lunarphase.ui.home.viewpager.list.ListMoonFragment"
+        android:label="ListMoonFragment" />
+    <fragment
+        tools:layout="@layout/fragment_calendar_moon"
+        android:id="@+id/calendarMoonFragment"
+        android:name="com.yun.lunarphase.ui.home.viewpager.calendar.CalendarMoonFragment"
+        android:label="CalendarMoonFragment" />
+
+
 </navigation>

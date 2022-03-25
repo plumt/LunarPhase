@@ -1,17 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
+        <import type="android.view.View" />
+
+        <import type="com.yun.lunarphase.data.Constant" />
+
         <variable
             name="home"
-            type="com.yun.lunarphase.ui.HomeViewModel" />
+            type="com.yun.lunarphase.ui.home.HomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+
+        <View
+            android:id="@+id/v_line_top"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/color_e8e8e8"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btn_pre"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:clickable="true"
+            android:onClick="@{(v) -> home.onClick(v)}"
+            android:rotation="180"
+            android:src="@drawable/ic_ico_calendar_next"
+            android:tag="@{Constant.INSTANCE.PRE_MONTH}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintEnd_toStartOf="@id/tv_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_title" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:text="@{home.calTitle}"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/v_line_top" />
+
+        <ImageView
+            android:id="@+id/btn_next"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:clickable="true"
+            android:onClick="@{(v) -> home.onClick(v)}"
+            android:src="@drawable/ic_ico_calendar_next"
+            android:tag="@{Constant.INSTANCE.NEXT_MONTH}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_title"
+            app:layout_constraintTop_toTopOf="@id/tv_title" />
+
+        <View
+            android:id="@+id/v_line_middle"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/color_e8e8e8"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_moon"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:overScrollMode="never"
+            app:layout_constraintBottom_toTopOf="@id/v_line_bottom"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintTop_toBottomOf="@id/v_line_middle" />
+
+        <View
+            android:id="@+id/v_line_bottom"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/color_e8e8e8"
+            app:layout_constraintBottom_toTopOf="@id/btn_list"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintStart_toStartOf="@id/gl_start" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_cal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2.5dp"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/color_534713"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:onClick="@{(v) -> home.onClick(v)}"
+            android:stateListAnimator="@null"
+            android:textColor="@color/white"
+            android:tag="@{Constant.INSTANCE.CALENDAR_SCREEN}"
+            android:text="@string/btnCalendar"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:visibility="@{home.screen == Constant.INSTANCE.LIST_SCREEN ? View.VISIBLE : View.INVISIBLE}"
+            app:cornerRadius="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintStart_toStartOf="@id/gl_start" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_list"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2.5dp"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/color_ffd100"
+            android:textColor="@color/color_534713"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:onClick="@{(v) -> home.onClick(v)}"
+            android:stateListAnimator="@null"
+            android:tag="@{Constant.INSTANCE.LIST_SCREEN}"
+            android:text="@string/btnList"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:visibility="@{home.screen == Constant.INSTANCE.CALENDAR_SCREEN ? View.VISIBLE : View.INVISIBLE }"
+            app:cornerRadius="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintStart_toStartOf="@id/gl_start" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -11,5 +11,5 @@ val apiModule = module {
         return retrofit.create(OpenApi::class.java)
     }
 
-    single(named("Open")) { providerOpenApi(get(named("open"))) }
+    single() { providerOpenApi(get()) }
 }

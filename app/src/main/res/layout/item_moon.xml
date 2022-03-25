@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.yun.lunarphase.data.Constant" />
+
+        <variable
+            name="itemMoon"
+            type="com.yun.lunarphase.data.model.MoonModel.MoonModels.Datas" />
+
+        <variable
+            name="movieItemListener"
+            type="com.yun.lunarphase.base.BaseRecyclerAdapter.OnItemClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginBottom="8dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@{itemMoon.today ? @color/color_50ffd100 : @color/white}">
+
+                <ImageView
+                    setImages="@{itemMoon.lunAgeStr()}"
+                    android:id="@+id/img_moon"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="10dp"
+                    android:tag="@{Constant.INSTANCE.MOON_TAG}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:id="@+id/tv_date"
+                    android:layout_marginStart="30dp"
+                    android:gravity="center_vertical|left"
+                    android:text="@{itemMoon.solDay + `일 (` + itemMoon.solWeek+`)`}"
+                    android:textColor="@{itemMoon.solWeek.equals(`토`) ? @color/color_297EFF : itemMoon.solWeek.equals(`일`) ? @color/color_FB3B3B : @color/black}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toEndOf="@id/img_moon"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
