@@ -14,8 +14,12 @@ import com.yun.lunarphase.data.Constant
 import com.yun.lunarphase.data.Constant.TAG
 import com.yun.lunarphase.databinding.FragmentCalendarMoonBinding
 import com.yun.lunarphase.ui.home.HomeViewModel
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import org.joda.time.DateTime
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.*
 
 class CalendarMoonFragment
     :
@@ -56,14 +60,14 @@ class CalendarMoonFragment
     }
 
 
-    private fun setCalendar(value: Int = 0) {
+    private fun setCalendar() {
         binding.cvCalendar.let {
             viewPagerFragment.run {
-                Handler().postDelayed({
+//                Handler().postDelayed({
                     viewPagerFragment.isHomeLoading.value = false
-                }, 1000)
+//                }, 1000)
                 it.current = showDate
-                it.current!!.plusMonths(value).run {
+                it.current!!.plusMonths(0).run {
                     it.initCalendar(
                         this,
                         CalendarUtils.getMonthList(this),

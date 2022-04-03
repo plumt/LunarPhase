@@ -25,7 +25,7 @@
             android:minHeight="60dp"
             ads:layout_constraintTop_toTopOf="parent"
             ads:adSize="BANNER"
-            ads:adUnitId="@string/admob_banner_test_id">
+            ads:adUnitId="@string/admob_banner_id">
         </com.google.android.gms.ads.AdView>
 
         <fragment

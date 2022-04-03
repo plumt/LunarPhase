@@ -1,6 +1,7 @@
 package com.yun.lunarphase.ui.home
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -14,10 +15,15 @@ import com.yun.lunarphase.custom.ZoomOutPageTransformer
 import com.yun.lunarphase.data.Constant
 import com.yun.lunarphase.data.Constant.CALENDAR_SCREEN
 import com.yun.lunarphase.data.Constant.LIST_SCREEN
+import com.yun.lunarphase.data.Constant.NOMAL
+import com.yun.lunarphase.data.Constant.NO_INTERNET
+import com.yun.lunarphase.data.Constant.NO_MOON_DATA
 import com.yun.lunarphase.data.Constant.TAG
 import com.yun.lunarphase.databinding.FragmentHomeBinding
 import com.yun.lunarphase.ui.home.viewpager.calendar.CalendarMoonFragment
 import com.yun.lunarphase.ui.home.viewpager.list.ListMoonFragment
+import com.yun.lunarphase.ui.main.MainActivity
+import com.yun.lunarphase.ui.popup.ExitPopup
 import com.yun.lunarphase.ui.popup.WarningPopup
 import org.joda.time.DateTime
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -36,7 +42,7 @@ class HomeFragment :
         binding.apply {
 
             vpMoon.run {
-//                setPageTransformer(ZoomOutPageTransformer())
+                setPageTransformer(ZoomOutPageTransformer())
                 isUserInputEnabled = false
                 adapter = object : FragmentStateAdapter(this@HomeFragment) {
                     override fun getItemCount(): Int = 2
@@ -56,34 +62,51 @@ class HomeFragment :
                 }
             })
 
-            viewModel.isHomeLoading.observe(viewLifecycleOwner,{
+            viewModel.isHomeLoading.observe(viewLifecycleOwner, {
                 sharedViewModel.isLoading.value = it
             })
 
-            viewModel.isNullMoon.observe(viewLifecycleOwner,{
-                if(it){
-                    viewModel.isNullMoon.value = false
-                    showPopup()
+            viewModel.isShowPopup.observe(viewLifecycleOwner, {
+                when (it) {
+                    NO_MOON_DATA -> {
+                        showWarningPopup(
+                            requireActivity().getString(R.string.notice),
+                            requireActivity().getString(R.string.no_moon_data)
+                        )
+                    }
+                    NO_INTERNET -> {
+                        showWarningPopup(
+                            requireContext().getString(R.string.internet_title),
+                            requireContext().getString(R.string.internet_contents)
+                        )
+                    }
                 }
             })
 
-            viewModel.openAdmob.observe(viewLifecycleOwner,{
-                if(it){
+            viewModel.openAdmob.observe(viewLifecycleOwner, {
+                if (it) {
                     viewModel.openAdmob.value = false
-                    sharedViewModel.mInterstitialAd.show()
+                    sharedViewModel.showAds()
                 }
             })
         }
     }
 
-    private fun showPopup(){
+    private fun showWarningPopup(title: String, contents: String) {
         WarningPopup().apply {
-            showPopup(requireContext(),"알림","달의 위상 정보를 가져올 수 없습니다.")
-            setDialogListener(object : WarningPopup.CustomDialogListener{
+            showPopup(requireContext(), title, contents)
+            setDialogListener(object : WarningPopup.CustomDialogListener {
                 override fun onResultClicked(result: Boolean) {
                     viewModel.run {
-//                        showDate = DateTime(nowDate)
-                        updateMoon(true)
+                        when (isShowPopup.value) {
+                            NO_MOON_DATA -> {
+                                updateMoon(true)
+                            }
+                            NO_INTERNET -> {
+                                (activity as MainActivity).finish()
+                            }
+                        }
+                        viewModel.isShowPopup.value = NOMAL
                     }
                 }
             })

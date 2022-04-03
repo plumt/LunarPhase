@@ -42,10 +42,17 @@ class DayItemView @JvmOverloads constructor(
 
     private var eventPaint: Paint = Paint()
 
+    var r = context.resources;
+    var image: Bitmap? = null
+
     init {
         /* Attributes */
         context.withStyledAttributes(attrs, R.styleable.CalendarView, defStyleAttr, defStyleRes) {
             val dayTextSize = getDimensionPixelSize(R.styleable.CalendarView_dayTextSize, 0).toFloat()
+
+            if(moon != null){
+                image = BitmapFactory.decodeResource(r, Constant.moonImgArray[moon!!])
+            }
 
             /* 흰색 배경에 유색 글씨 */
             paint = TextPaint().apply {
@@ -71,6 +78,8 @@ class DayItemView @JvmOverloads constructor(
                 style = Paint.Style.FILL
                 color = Color.RED
             }
+
+
         }
     }
 
@@ -93,11 +102,9 @@ class DayItemView @JvmOverloads constructor(
         }
 
         if(moon != null) {
-            val r = context.resources;
-            val image = BitmapFactory.decodeResource(r, Constant.moonImgArray[moon!!])
             val resize =
-                Bitmap.createScaledBitmap(image, (canvas.height / 3f).toInt(), (canvas.height / 3f).toInt(), true)
-            canvas.drawBitmap(resize, ((canvas.height - canvas.width) / 4f), ((canvas.height + canvas.width) / 2.5f), null)
+                Bitmap.createScaledBitmap(image!!, ((canvas.height + canvas.width) / 5f).toInt(), ((canvas.height + canvas.width) / 5f).toInt(), false)
+            canvas.drawBitmap(resize, (canvas.width / 4f), (canvas.height / 1.5f), null)
         }
 
         val date = date.dayOfMonth.toString()

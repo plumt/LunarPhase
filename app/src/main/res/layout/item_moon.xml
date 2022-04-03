@@ -37,8 +37,8 @@
                 android:background="@{itemMoon.today ? @color/color_50ffd100 : @color/white}">
 
                 <ImageView
-                    setImages="@{itemMoon.lunAgeStr()}"
                     android:id="@+id/img_moon"
+                    setImages="@{itemMoon.lunAgeStr()}"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_margin="10dp"
@@ -48,17 +48,27 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/tv_date"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:id="@+id/tv_date"
                     android:layout_marginStart="30dp"
                     android:gravity="center_vertical|left"
                     android:text="@{itemMoon.solDay + `일 (` + itemMoon.solWeek+`)`}"
                     android:textColor="@{itemMoon.solWeek.equals(`토`) ? @color/color_297EFF : itemMoon.solWeek.equals(`일`) ? @color/color_FB3B3B : @color/black}"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/img_moon"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@{itemMoon.moonNm()}"
+                    android:textColor="@color/color_979797"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>

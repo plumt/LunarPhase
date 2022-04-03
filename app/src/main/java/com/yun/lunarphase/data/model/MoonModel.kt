@@ -5,6 +5,10 @@ import com.tickaroo.tikxml.annotation.PropertyElement
 import com.tickaroo.tikxml.annotation.Xml
 import com.yun.lunarphase.base.Item
 import com.yun.lunarphase.data.Constant
+import com.yun.lunarphase.data.Constant.FIRST_QUATER_MOON
+import com.yun.lunarphase.data.Constant.FULL_MOON
+import com.yun.lunarphase.data.Constant.LAST_QUATER_MOON
+import com.yun.lunarphase.data.Constant.NEW_MOON
 
 
 object MoonModel {
@@ -49,9 +53,10 @@ object MoonModel {
             }
         }
     }
+
     data class MoonModels(
         val data: List<Datas>
-    ){
+    ) {
         data class Datas(
             override val id: Int = 0,
             override val viewType: Int = 0,
@@ -63,6 +68,14 @@ object MoonModel {
             val today: Boolean = false
         ) : Item() {
             fun lunAgeStr() = lunAge?.toFloat()?.toInt()?.toString()
+            fun moonNm() = if(lunAge == null) ""
+            else when(lunAge.toFloat().toInt()){
+                0 -> NEW_MOON
+                7 -> FIRST_QUATER_MOON
+                15 ->  FULL_MOON
+                24 -> LAST_QUATER_MOON
+                else -> ""
+            }
         }
     }
 }

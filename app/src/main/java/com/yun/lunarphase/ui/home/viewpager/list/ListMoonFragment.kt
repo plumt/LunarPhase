@@ -59,7 +59,9 @@ class ListMoonFragment
                         bindingVariableId = BR.itemMoon,
                         bindingListener = BR.movieItemListener
                     ) {
-                    override fun onItemClick(item: MoonModel.MoonModels.Datas, view: View) {}
+                    override fun onItemClick(item: MoonModel.MoonModels.Datas, view: View) {
+
+                    }
                 }
             }
         }
@@ -67,10 +69,9 @@ class ListMoonFragment
 
     private fun setMoonData(screen: Int) {
         if (screen == LIST_SCREEN) {
-            Handler().postDelayed({
+//            Handler().postDelayed({
                 viewPagerFragment.isHomeLoading.value = false
-
-            }, 1000)
+//            }, 1000)
 
                 viewPagerFragment.run {
                     viewModel.moonItems.value = moonItems.value

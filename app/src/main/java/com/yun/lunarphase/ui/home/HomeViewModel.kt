@@ -1,6 +1,9 @@
 package com.yun.lunarphase.ui.home
 
 import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -9,10 +12,15 @@ import com.yun.lunarphase.R
 import com.yun.lunarphase.base.BaseViewModel
 import com.yun.lunarphase.base.ListLiveData
 import com.yun.lunarphase.custom.CalendarUtils.Companion.getFormatString
+import com.yun.lunarphase.data.Constant.ADS_SHOW_CNT
 import com.yun.lunarphase.data.Constant.CALENDAR_SCREEN
 import com.yun.lunarphase.data.Constant.LIST_SCREEN
 import com.yun.lunarphase.data.Constant.NEXT_MONTH
+import com.yun.lunarphase.data.Constant.NOMAL
+import com.yun.lunarphase.data.Constant.NO_INTERNET
+import com.yun.lunarphase.data.Constant.NO_MOON_DATA
 import com.yun.lunarphase.data.Constant.PRE_MONTH
+import com.yun.lunarphase.data.Constant.SHAREDPREFERENCES_CNT_KEY
 import com.yun.lunarphase.data.Constant.TAG
 import com.yun.lunarphase.data.model.MoonModel
 import com.yun.lunarphase.data.repository.OpenApi
@@ -51,8 +59,10 @@ class HomeViewModel(
     // 홈 로딩
     val isHomeLoading = MutableLiveData<Boolean>(false)
 
-    // 위상 데이터가 하나도 없을 경우
-    val isNullMoon = MutableLiveData(false)
+    // 0 -> nonmal
+    // 1 -> no internet
+    // 2- > no moon data
+    val isShowPopup = MutableLiveData(NOMAL)
 
     // 광고 노출
     val openAdmob = MutableLiveData(false)
@@ -63,30 +73,34 @@ class HomeViewModel(
 
 
     private fun callMoonData() {
-        api.moon(
-            URLDecoder.decode(mContext.getString(R.string.ServiceKey), "UTF-8"),
-            DateTime(showDate).getFormatString("YYYY"),
-            DateTime(showDate).getFormatString("MM"),
-            "31"
-        )
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
-            .flatMap {
-                Observable.just(it)
-            }.observeOn(AndroidSchedulers.mainThread()).map {
-                moonItems.value = addItem(it)
-                if (it.body.items.item == null) {
-                    isNullMoon.value = true
-                }
-            }.subscribe({
-                isHomeLoading.value = false
-            }, {
-                Log.e(TAG, "error : ${it.message}")
-                isHomeLoading.value = false
-                isNullMoon.value = true
-            }, {
-                cntCheck()
-            })
+        if(internetCheck()){
+            api.moon(
+                URLDecoder.decode(mContext.getString(R.string.ServiceKey), "UTF-8"),
+                DateTime(showDate).getFormatString("YYYY"),
+                DateTime(showDate).getFormatString("MM"),
+                "31"
+            )
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .flatMap {
+                    Observable.just(it)
+                }.observeOn(AndroidSchedulers.mainThread()).map {
+                    moonItems.value = addItem(it)
+                    if (it.body.items.item == null) {
+                        isShowPopup.value = NO_MOON_DATA
+                    }
+                }.subscribe({
+                    cntCheck()
+                    isHomeLoading.value = false
+                }, {
+                    Log.e(TAG, "error : ${it.message}")
+                    isHomeLoading.value = false
+                    isShowPopup.value = NO_MOON_DATA
+                })
+        } else{
+            isShowPopup.value = NO_INTERNET
+        }
+
     }
 
 
@@ -126,18 +140,14 @@ class HomeViewModel(
     }
 
     private fun cntCheck(){
-        if(sharedPreferences.getInt(mContext, "cnt")!! >= 4){
-            Toast.makeText(mContext, "광고 노출!", Toast.LENGTH_SHORT).show()
-            openAdmob.value = true
-            sharedPreferences.setInt(mContext, "cnt", 0)
-        } else{
-            sharedPreferences.setInt(
-                mContext,
-                "cnt",
-                sharedPreferences.getInt(mContext, "cnt")!! + 1
-            )
+        sharedPreferences.getInt(mContext, SHAREDPREFERENCES_CNT_KEY)!!.let {
+            if(it >= ADS_SHOW_CNT){
+                openAdmob.value = true
+            } else{
+                sharedPreferences.setInt(mContext,SHAREDPREFERENCES_CNT_KEY,it + 1)
+            }
         }
-        Log.d(TAG, "cnt : ${sharedPreferences.getInt(mContext, "cnt")}")
+        Log.d(TAG, "cnt : ${sharedPreferences.getInt(mContext, SHAREDPREFERENCES_CNT_KEY)}")
 
     }
 
@@ -155,5 +165,17 @@ class HomeViewModel(
                 updateMoon()
             }
         }
+    }
+
+    private fun internetCheck(): Boolean {
+        // true - internet on
+        // false - internet off
+        val manager = mContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val nw = manager.activeNetwork ?: return false
+
+        val actNw = manager.getNetworkCapabilities(nw) ?: return false
+        return actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || actNw.hasTransport(
+            NetworkCapabilities.TRANSPORT_CELLULAR
+        )
     }
 }

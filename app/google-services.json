@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1081304059427",
+    "project_id": "lunarphase-7535e",
+    "storage_bucket": "lunarphase-7535e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081304059427:android:a70eeb78cea5892f892b96",
+        "android_client_info": {
+          "package_name": "com.yun.lunarphase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1081304059427-79ivkmfqchee45nrqn114fbp19q1joja.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yun.lunarphase",
+            "certificate_hash": "48e4615e28cb995c17cad48f9a1f973f933731c0"
+          }
+        },
+        {
+          "client_id": "1081304059427-elea9qtddaclc7okrs0m16bbfchsp3ni.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvDFmlQvQuHo0D3HsXwiW_KV5bPefbNfw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1081304059427-elea9qtddaclc7okrs0m16bbfchsp3ni.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
